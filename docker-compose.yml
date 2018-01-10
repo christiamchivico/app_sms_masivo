@@ -7,7 +7,7 @@ services:
     mysql:
       image: mysql:8.0
       container_name: bubo-mysql
-      #working_dir: dbdata:/var/lib/mysql
+      working_dir: /var/www
       volumes:
         - .dbdata:/var/lib/mysql
       environment:
