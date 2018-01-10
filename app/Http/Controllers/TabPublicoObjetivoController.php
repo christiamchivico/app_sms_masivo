@@ -44,6 +44,9 @@ class TabPublicoObjetivoController extends Controller
     public function new(Request $request){
 
     	//Obtengo la empresa del usuario logueado
+
+        
+        
     	$idUser 	= Auth::user()->id;
     	$idEmpresa 	= DB::table('users')
 	    				->select('rel_users_empresa.tab_empresa_id')
@@ -82,6 +85,10 @@ class TabPublicoObjetivoController extends Controller
                             ->get();
         $infoCampana    =   $infoCampana[0];
 
+
+                   
+        
+        /*
         if (!empty($publicoSMS)) {
 
             $sms            =   $infoCampana->mensaje_sms;
@@ -100,7 +107,7 @@ class TabPublicoObjetivoController extends Controller
             }else{
                 return view('Home');
             }
-        }
+        }*/
 
     }
 
@@ -339,6 +346,124 @@ class TabPublicoObjetivoController extends Controller
 		}
 		
 		return $insert;
+
+    }
+
+    public function getPublicoInfoAjax(Request $request){
+
+        ini_set('max_execution_time',0);
+
+        $idCampana = $request->idCampana;
+
+        /*$f_i = $request->fecha_i;
+        $f_f = $request->fecha_f;*/
+    
+        $sEcho = $request->draw;
+        $iDisplayStart = $request->start;
+        $iDisplayLength = $request->length;
+
+        //Ordering
+        $iSortCol_0 = $request->iSortCol_0;
+        $iSortingCols = $request->iSortingCols;
+        $aColumns = array("pi.nombre","Enviados","Rechazados","Total");
+        
+        $sWhere = 'WHERE rcp.tab_campana_id = '.$idCampana;
+
+        //Searching
+        $sSearch = $request->search['value'];        
+        $OrderD = $request->order['0']['dir'];
+
+        //Ordering
+        $sByColumn = $request->order['0']['column'];
+        if($sByColumn == 0){
+
+            $bY="pi.nombre";
+
+        }elseif($sByColumn == 1){
+
+            $bY="Enviados";
+
+        }elseif($sByColumn == 2){
+
+            $bY="Rechazados";
+
+        }elseif($sByColumn == 3){
+
+            $bY="Total";
+
+        }
+
+        $sOrder = "ORDER BY ".$bY." ".$OrderD;
+        
+        
+        if ($sSearch != null && $sSearch != "")
+        {
+            if ($sWhere == '') {
+                $sWhere .= 'WHERE (';
+            } else {
+                $sWhere .= 'AND (';
+            }
+
+            for ($i = 0; $i < count($aColumns); $i++) {
+                $sWhere .= $aColumns[$i] . ' LIKE "%' . $sSearch . '%" OR ';
+            }
+
+            $sWhere = substr_replace($sWhere, '', -3);
+            $sWhere .= ')';
+        }
+
+        $inventario = DB::select(
+                        "SELECT pi.nombre, 
+                                sum(rs.aceptado) as Enviados, 
+                                (count(rs.id)-sum(rs.aceptado)) as Rechazados,
+                                count(rs.id) as Total
+                        FROM tab_publico_inf pi
+                        LEFT JOIN rel_campana_publico rcp on rcp.tab_publico_objetivo_info_id = pi.id
+                        LEFT JOIN tab_resultado_sms_det rs on rs.tab_publico_objetivo_info_id = pi.id
+                        ". $sWhere . "
+                        group by pi.id "
+                        . $sOrder . "
+                        LIMIT ". $iDisplayLength . " OFFSET " . $iDisplayStart 
+                    );
+
+        $inventario2 = DB::select("
+                        SELECT pi.nombre, 
+                                sum(rs.aceptado) as Enviados, 
+                                (count(rs.id)-sum(rs.aceptado)) as Rechazados,
+                                count(rs.id) as Total
+                        FROM tab_publico_inf pi
+                        LEFT JOIN rel_campana_publico rcp on rcp.tab_publico_objetivo_info_id = pi.id
+                        LEFT JOIN tab_resultado_sms_det rs on rs.tab_publico_objetivo_info_id = pi.id
+                        ". $sWhere . "
+                        group by pi.id "
+                        . $sOrder
+                    );
+
+        $filteredInventario = count($inventario);
+        $totalInventario    = count($inventario2);
+
+        $output = array(
+            "draw"            => $sEcho,
+            "recordsTotal"    => $filteredInventario,
+            "recordsFiltered" => $totalInventario,
+            "data"            => array(),
+        );
+
+        foreach ($inventario as $inv)
+        {
+
+            $row = array();          
+
+            $row[] = $inv->nombre;
+            $row[] = $inv->Enviados;
+            $row[] = $inv->Rechazados;
+            $row[] = $inv->Total;
+
+            $output['data'][] = $row;
+
+        }
+
+        return response()->json($output);
 
     }
 }

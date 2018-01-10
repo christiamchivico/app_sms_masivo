@@ -2,23 +2,23 @@
 
 @section('migas')
 <h1>
-Dashboard
-<small>Control panel</small>
+CAMPAÑAS
+<small>Campañas Creadas</small>
 </h1>
 <ol class="breadcrumb">
-<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-<li class="active">Dashboard</li>
+<li><a href="{{ route('Home')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+<li class="active">Campañas</li>
 </ol>
 @endsection
 
 @section('contenido')
 
 <div class="col-xs-12 col-md-12">
-	<div class="box box-success">
+	<div class="box box-primary">
         <div class="box-header with-border">
           	<h3 class="box-title"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;Campañas</h3>
 			<div class="box-tools pull-right">
-		        <a href="{{ route('create_campana')}}" class="btn btn-success"><i class="fa fa-list"></i>&nbsp;Crear Campaña</a>
+		        <a href="{{ route('create_campana')}}" class="btn btn-info"><i class="fa fa-list"></i>&nbsp;Crear Campaña</a>
 	      	</div>
 		</div>
         <div class="box-body">
@@ -28,11 +28,13 @@ Dashboard
 						<th>Id</th>
 						<th>Nombre</th>
 						<th>Asunto</th>
-						<th>Correo Emisor</th>
-						<th>Correo Respuesta</th>
+						<!--th>Correo Emisor</th>
+						<th>Correo Respuesta</th-->
 						<th>SMS</th>
 						<th>Categoria Campaña</th>
 						<th>Id Empresa</th>
+						<th>Estado</th>
+						<th>Acciones</th>
 					</tr>
 				</thead>
 				<tbody>

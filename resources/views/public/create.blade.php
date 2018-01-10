@@ -1,24 +1,5 @@
-@extends('base.app')
-
-@section('migas')
-<h1>
-CAMPAÑAS
-<small>Gestion Publico</small>
-</h1>
-<ol class="breadcrumb">
-<li><a href="#"><i class="fa fa-dashboard"></i> Campañas</a></li>
-<li class="active">Publico</li>
-</ol>
-@endsection
-
-@section('contenido')
-
-
 <div class="col-md-12">
-<div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Añadir Publico</h3>
-            </div>
+           
             <!-- /.box-header -->
             @if ($errors->any())     
             <div class="alert alert-danger">         
@@ -30,7 +11,11 @@ CAMPAÑAS
             </div> 
             @endif
             <!-- form start -->
-            <form role="form" id="" action="{{ route('new_publico') }}" method="POST" enctype="multipart/form-data">
+            <form role="form" id="cargue" enctype="multipart/form-data">
+              <input type="hidden" name="idCampana" value="{{ $idCampana }}">
+              <!--input type="hidden" name="_token" value="{{ csrf_token() }}"-->
+              <meta name="csrf-token" content="{{ csrf_token() }}">
+              
               <div class="box-body">
                 <div class="form-group col-md-6">
                   <label for="nombre">Nombre del Publico</label>
@@ -56,21 +41,47 @@ CAMPAÑAS
               </div>
               <!-- /.box-body -->
 
-              <input type="hidden" name="idCampana" value="{{ $idCampana }}">
-              <input type="hidden" name="_token" value="{{ csrf_token() }}">
+              
 
-              <div class="box-footer">
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>  Enviar</button>
+              <div class="modal-footer">
+                <a href="javascript:;" onclick="carga_publico()" class="btn btn-primary"><i class="fa fa-upload"></i>  Cargar</a>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cerrar</button>
+
               </div>
             </form>
-          </div>
 </div>
 
-@endsection
+<script type="text/javascript">
+  
+  function carga_publico(){
 
-@section('js')
+    var property = document.getElementById('archivo').files[0];
 
-<script type="text/javascript"></script>
+    var form_data = new FormData();
+        form_data.append("archivo",property);
+        form_data.append("idCampana",$('#idCampana').val());
+        form_data.append("nombre",$('#nombre').val());
+        form_data.append("segmento",$('#segmento').val());
+        $.ajax({
+          url:"{{ route('new_publico') }}",
+          method:'POST',
+          headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
 
-@endsection
+          data:form_data,
+          contentType:false,
+          cache:false,
+          processData:false,
+          beforeSend:function(){
+            $('#msg').html('Loading......');
+          },
+          success:function(data){
+            console.log(data);
+            $('#msg').html(data);
+          }
+        });
 
+  }
+
+</script>

@@ -20,5 +20,6 @@ class TabCampana extends Model
         'personalizado',
         'cat_categoria_campana_id',
         'tab_empresa_id',
+        'status',
     ];
 }

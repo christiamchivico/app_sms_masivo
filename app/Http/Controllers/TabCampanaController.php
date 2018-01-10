@@ -9,8 +9,8 @@ use Redirect;
 
 use App\Models\TabCampana;
 use App\Models\CatCategoriaCampana;
-use App\Models\CatTipoCampana;
-use App\Models\RelCampanaTipoCampana;
+//use App\Models\CatTipoCampana;
+//use App\Models\RelCampanaTipoCampana;
 use App\Models\RelUsersCampana;
 use App\Models\TabEmpresa;
 
@@ -28,69 +28,84 @@ class TabCampanaController extends Controller
 
     public function create(){
 
-    	$catCampana	=	CatCategoriaCampana::all();
-    	$tipCampana	=	CatTipoCampana::all();
+        $catCampana =   CatCategoriaCampana::all();
+        //$tipCampana   =   CatTipoCampana::all();
 
-    	return view('campanas.create',compact('catCampana','tipCampana'));
+        //return view('campanas.create',compact('catCampana','tipCampana'));
+        return view('campanas.create',compact('catCampana'));
     }
 
     public function new(Request $request){
 
-    	$nombre 	=	$request->nombre;
-    	$asunto 	=	$request->asunto;
-    	$catCampana =	$request->categoria;
-    	$tipCampana =	$request->tipo;
-    	$tipSMS		=	$request->resultado_personalizado;
-    	$mensaje	=	$request->mensaje;
+        $nombre     =   $request->nombre;
+        $asunto     =   $request->asunto;
+        $catCampana =   $request->categoria;
+        //$tipCampana = $request->tipo;
+        $tipSMS     =   $request->resultado_personalizado;
+        $mensaje    =   $request->mensaje;
 
-    	//Obtengo la empresa del usuario logueado
-    	$idUser 	= Auth::id();
-    	$idEmpresa 	= DB::table('users')
-	    				->select('rel_users_empresa.tab_empresa_id')
-			            ->leftJoin('rel_users_empresa', 'users.id', '=', 'rel_users_empresa.users_id')
-			            ->where('users.id',$idUser)
-	    				->get();
+        //Obtengo la empresa del usuario logueado
+        $idUser     = Auth::id();
+        $idEmpresa  = DB::table('users')
+                        ->select('rel_users_empresa.tab_empresa_id')
+                        ->leftJoin('rel_users_empresa', 'users.id', '=', 'rel_users_empresa.users_id')
+                        ->where('users.id',$idUser)
+                        ->get();
 
-	    $request->validate([
-	    			'nombre' 					=> 'required|string|max:255',
-					'asunto' 					=> 'required|string|max:255',
-					'categoria' 				=> 'required',   
-					'tipo'						=> 'required',
-					'resultado_personalizado'	=> 'required',   
+        $request->validate([
+                    'nombre'                    => 'required|string|max:255',
+                    'asunto'                    => 'required|string|max:255',
+                    'categoria'                 => 'required',   
+                    'resultado_personalizado'   => 'required',   
                     'mensaje'                   => 'required|string|max:160',   
-	    			]);
+                    ]);
 
-	    $idCampana	=	TabCampana::create([
-			    				'nombre'					=>	$nombre,
-			    				'asunto'					=>	$asunto,
-			    				'email_emisor'				=>	'',
-			    				'email_respuesta'			=>	'',
-			    				'mensaje_sms'				=>	$mensaje,
-			    				'cat_categoria_campana_id'	=>	$catCampana,
-			    				'tab_empresa_id'			=>	$idEmpresa[0]->tab_empresa_id,
+        $idCampana  =   TabCampana::create([
+                                'nombre'                    =>  $nombre,
+                                'asunto'                    =>  $asunto,
+                                'email_emisor'              =>  '',
+                                'email_respuesta'           =>  '',
+                                'mensaje_sms'               =>  $mensaje,
+                                'cat_categoria_campana_id'  =>  $catCampana,
+                                'tab_empresa_id'            =>  $idEmpresa[0]->tab_empresa_id,
                                 'personalizado'             =>  $tipSMS,
-			    			]);
+                            ]);
 
-	    RelUsersCampana::create([
-	    		'users_id'			=>	$idUser,
-	    		'tab_campana_id'	=>	$idCampana->id,
-	    		]);
+        RelUsersCampana::create([
+                'users_id'          =>  $idUser,
+                'tab_campana_id'    =>  $idCampana->id,
+                ]);
 
-	    RelCampanaTipoCampana::create([
-	    		'cat_tipo_campana_id'	=>	$catCampana,
-        		'tab_campana_id'		=>	$idCampana->id,
-	    		]);
+        /*RelCampanaTipoCampana::create([
+                'cat_tipo_campana_id'   =>  $catCampana,
+                'tab_campana_id'        =>  $idCampana->id,
+                ]);*/
 
-        return Redirect::to(route('create_publico',['idCampana'=>$idCampana->id]));
+        return Redirect::to(route('edit_campana',['idCampana'=>$idCampana->id]));
 
     }
 
     public function list(){
 
-    	return view('campanas.list');
+        return view('campanas.list');
     }
 
-    public function getUsuariosAjax(Request $request){
+    public function edit(Request $request){
+
+        if (isset($request->id)) {
+            
+            $id = $request->id;
+
+            $infoCampana = TabCampana::where('id',$id)->first();
+            $catCampana  = CatCategoriaCampana::all();  
+
+            return view('campanas.edit',compact('infoCampana','catCampana'));            
+        }
+
+
+    }
+
+    public function getCampanasAjax(Request $request){
 
         ini_set('max_execution_time',0);
 
@@ -104,9 +119,9 @@ class TabCampanaController extends Controller
         //Ordering
         $iSortCol_0 = $request->iSortCol_0;
         $iSortingCols = $request->iSortingCols;
-        $aColumns = array("id","nombre","asunto","email_emisor","email_respuesta","mensaje_sms","cat_categoria_campana_id","tab_empresa_id");
+        $aColumns = array("id","nombre","asunto","email_emisor","email_respuesta","mensaje_sms","cat_categoria_campana_id","tab_empresa_id","status");
         
-        $sWhere = '1=1';
+        $sWhere = '';
         
         //Searching
         $sSearch = $request->search['value'];        
@@ -145,7 +160,10 @@ class TabCampanaController extends Controller
         }elseif($sByColumn == 7){
 
             $bY="tab_empresa_id";
+            
+        }elseif($sByColumn == 8){
 
+            $bY="status";
         }
 
         $sOrder = "ORDER BY ".$bY." ".$OrderD;
@@ -153,51 +171,81 @@ class TabCampanaController extends Controller
         
         if ($sSearch != null && $sSearch != "")
         {
-        	$sWhere = '';
-            $sWhere.= "AND (";           
-
-            for ($i = 0; $i < count($aColumns); $i++)
-            {
-                $sWhere .= $aColumns[$i]." LIKE '%".$sSearch."%' OR ";
+            if ($sWhere == '') {
+                $sWhere .= 'WHERE (';
+            } else {
+                $sWhere .= 'AND (';
             }
 
-            $sWhere = substr_replace($sWhere, "", -3);
+            for ($i = 0; $i < count($aColumns); $i++) {
+                $sWhere .= $aColumns[$i] . ' LIKE "%' . $sSearch . '%" OR ';
+            }
+
+            $sWhere = substr_replace($sWhere, '', -3);
             $sWhere .= ')';
         }
 
-        $inventario = DB::table('tab_campana')
-        						->select('id','nombre','asunto','email_emisor','email_respuesta','mensaje_sms','cat_categoria_campana_id','tab_empresa_id')
-        						//->where($sWhere)
-        						->get();
+        $inventario = DB::select("SELECT id, nombre, asunto, email_emisor, email_respuesta, mensaje_sms, cat_categoria_campana_id, tab_empresa_id, status 
+                                FROM tab_campana 
+                                ". $sWhere . "
+                                ". $sOrder . "
+                                LIMIT ". $iDisplayLength . " OFFSET " . $iDisplayStart . "");
 
 
-        $inventario3 = DB::table("tab_campana")
-        					->count();
+        $inventario2 = DB::select("SELECT id, nombre, asunto, email_emisor, email_respuesta, mensaje_sms, cat_categoria_campana_id, tab_empresa_id, status 
+                                FROM tab_campana
+                                ". $sWhere . "
+                                ". $sOrder);
 
-        //$displayInventario = count($inventario2);
-        $totalInventario = $inventario3;
+        $filteredInventario = count($inventario);
+        $totalInventario    = count($inventario2);
 
         $output = array(
-            "draw" => $sEcho,
-            "recordsTotal" => $totalInventario,
+            "draw"            => $sEcho,
+            "recordsTotal"    => $filteredInventario,
             "recordsFiltered" => $totalInventario,
-            "data" => array()
+            "data"            => array(),
         );
 
-        $string = "";
+        $categoriaCampanas = CatCategoriaCampana::all();
 
         foreach ($inventario as $inv)
         {
+
+            $actions = '<a class="btn btn-success" id="idCampana" name="idCampana" href="'.route('edit_campana',['id' => $inv->id]).'">
+                            <i class="fa fa-edit"></i> Editar
+                        </a>';
+
             $row = array();          
 
             $row[] = $inv->id;
             $row[] = $inv->nombre;
             $row[] = $inv->asunto;
-            $row[] = $inv->email_emisor;
-            $row[] = $inv->email_respuesta;
+            //$row[] = $inv->email_emisor;
+            //$row[] = $inv->email_respuesta;
             $row[] = $inv->mensaje_sms;
-            $row[] = $inv->cat_categoria_campana_id;
+
+            //Change id for name category campana
+            foreach ($categoriaCampanas as $key) {
+
+                if ($key['id'] == $inv->cat_categoria_campana_id) {
+
+                    $row[] = $key['nombre'];
+                    break 1;
+                }
+            }
+
             $row[] = $inv->tab_empresa_id;
+            
+            if ($inv->status == '0') {
+                $status = '<label class="label label-success"> Sin Ejecutar </label>';
+            }else{
+                $status = '<label class="label label-danger"> Ejecutada </label>';
+            }
+
+            $row[] = $status;
+
+            $row[] = $actions;
 
             $output['data'][] = $row;
 
