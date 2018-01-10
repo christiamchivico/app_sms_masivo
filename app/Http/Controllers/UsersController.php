@@ -57,7 +57,7 @@ class UsersController extends Controller
 
     }
 
-    public function getusersAjax(Request $request){
+    public function getUsersAjax(Request $request){
         
         ini_set('max_execution_time',0);
 
@@ -113,13 +113,15 @@ class UsersController extends Controller
             $sWhere .= ')';
         }
 
-        $inventario = DB::select("SELECT u.id, u.name, u.email, cats.nombre FROM users u
+        $inventario = DB::select("SELECT u.id, u.name, u.email, cats.nombre, u.status 
+                                FROM users u
                                 INNER JOIN cat_sexo cats ON cats.id = u.cat_sexo_id
                                 ".$sWhere."
                                 ".$sOrder."
                                 LIMIT ".$iDisplayLength." OFFSET ".$iDisplayStart);
 
-        $inventario2 = DB::select("SELECT u.id, u.name, u.email, cats.nombre FROM users u
+        $inventario2 = DB::select("SELECT u.id, u.name, u.email, cats.nombre, u.status 
+                                FROM users u
                                 INNER JOIN cat_sexo cats ON cats.id = u.cat_sexo_id
                                 ".$sWhere." 
                                 ".$sOrder);
@@ -138,12 +140,24 @@ class UsersController extends Controller
 
         foreach ($inventario as $inv)
         {
+            $actions = '<a class="btn btn-success" href="#">
+                            <i class="fa fa-edit"></i> Editar
+                        </a>';
             $row = array();          
 
             $row[] = $inv->id;
             $row[] = $inv->name;
             $row[] = $inv->email;
             $row[] = $inv->nombre;
+
+            if ($inv->status == 'Online') {
+                $status = '<label class="label label-info"> Conectado </label>';
+            }else{
+                $status = '<label class="label label-danger"> Desconectado </label>';
+            }
+
+            $row[] = $status;
+            $row[] = $actions;            
 
             $output['data'][] = $row;
 

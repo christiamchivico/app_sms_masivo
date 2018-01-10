@@ -39,7 +39,9 @@ Route::post('/new_user', ['as'=>'new_user', 'uses'=>'UsersController@new']);
 Route::get('/create_campana', ['as'=>'create_campana', 'uses'=>'TabCampanaController@create']);
 Route::get('/new_campana', ['as'=>'new_campana', 'uses'=>'TabCampanaController@new']);
 Route::get('/list_campanas', ['as'=>'list_campanas', 'uses'=>'TabCampanaController@list']);
-Route::get('/list_campanas_ajax', ['as'=>'list_campanas_ajax', 'uses'=>'TabCampanaController@getUsuariosAjax']);
+Route::get('/list_campanas_ajax', ['as'=>'list_campanas_ajax', 'uses'=>'TabCampanaController@getCampanasAjax']);
+Route::get('/edit_campana/{id}', ['as'=>'edit_campana', 'uses'=>'TabCampanaController@edit']);
+
 
 // Modulo Publico
 Route::get('/create_publico/{idCampana}', ['as'=>'create_publico', 'uses'=>'TabPublicoObjetivoController@create']);

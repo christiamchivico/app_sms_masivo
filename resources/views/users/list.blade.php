@@ -7,18 +7,18 @@ Dashboard
 </h1>
 <ol class="breadcrumb">
 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-<li class="active">Dashboard</li>
+<li class="active">Usuarios</li>
 </ol>
 @endsection
 
 @section('contenido')
 
 <div class="col-xs-12 col-md-12">
-  <div class="box box-success">
+  <div class="box box-primary">
     <div class="box-header with-border">
       <h3 class="box-title"><i class="fa fa-list" aria-hidden="true"></i>&nbsp;Usuarios</h3>
       <div class="box-tools pull-right">
-        <a href="#" class="btn btn-success"><i class="fa fa-users"></i>&nbsp;Crear Usuario</a>
+        <a href="{{ route('create_user') }}" class="btn btn-info"><i class="fa fa-users"></i>&nbsp;Crear Usuario</a>
       </div>
     </div>
     <div class="box-body">
@@ -29,6 +29,8 @@ Dashboard
             <th>Nombre</th>
             <th>Email</th>
             <th>Sexo</th>
+            <th>Estado</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>

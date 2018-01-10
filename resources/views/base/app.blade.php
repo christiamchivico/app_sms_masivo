@@ -33,6 +33,8 @@
   <link rel="stylesheet" href="{{ asset('plugins/plugins/iCheck/all.css') }}">
   <!-- DataTables -->
   <link rel="stylesheet" href="{{ asset('plugins/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+  <!-- Custom -->
+  <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
   @yield('css')
   
@@ -117,19 +119,19 @@
             </a>
           </li>
           
-          <!--li class="treeview">
+          <li class="treeview">
             <a href="#">
-              <i class="fa fa-dashboard"></i> <span>Usuarios</span>
+              <i class="fa fa-gears"></i> <span>Sistema</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
-              <li><a href="{{route('create_user')}}"><i class="fa fa-circle-o"></i> Crear Usuario</a></li>
+              <li><a href="{{route('list_user')}}"><i class="fa fa-users"></i> Usuarios</a></li>
               
-              <li class="active"><a href="{{route('list_user')}}"><i class="fa fa-circle-o"></i> Listar Usuarios</a></li>
+              <li class=""><a href=""><i class="fa fa-home"></i> Empresa</a></li>
             </ul>
-          </li-->
+          </li>
         </ul>
       </section>
       <!-- /.sidebar -->
