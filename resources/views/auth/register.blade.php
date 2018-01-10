@@ -171,11 +171,11 @@
         email: "Ingresa un email válido"
       },
       password: {
-        required: "Por favor ingresa tu teléfono celular",
+        required: "Por favor ingresa tu Contraseña",
         minlength: jQuery.validator.format("Al menos {0} Caracteres requeridos!")
       },
       password_confirmation: {
-        required: "Por favor ingresa tu teléfono celular",
+        required: "Por favor confirma la Contraseña",
         minlength: jQuery.validator.format("Al menos {0} Caracteres requeridos!")
       },
       registro_terminos: {

@@ -3,11 +3,12 @@
 @section('migas')
 <h1>
 CAMPAÑAS
-<small>Campañas Creadas</small>
+<small>Nueva Campaña</small>
 </h1>
 <ol class="breadcrumb">
-<li><a href="#"><i class="fa fa-dashboard"></i> Campaña</a></li>
-<li class="active">Publico</li>
+<li><a href="{{ route('Home')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+<li class=""><a href="{{ route('list_campanas')}}">Campañas</a></li>
+<li class="active">Crear Campaña</li>
 </ol>
 @endsection
 
@@ -49,42 +50,33 @@ CAMPAÑAS
                     @endforeach
                   </select>
                 </div>
-                <div class="form-group col-md-6">
-                  <label>Tipo de Campaña</label>
-                  <select class="form-control" id="tipo" name="tipo">
-                    <option value="0"> Seleccione </option>
-                    @foreach($tipCampana as $key)
-                    <option value="{{ $key->id }}">{{ $key->nombre }}</option>
-                    @endforeach
-                  </select>
-                </div>
 
                 <div class="checkbox icheck col-md-12">
-				  <label>
-				    <input type="checkbox"  id="no_personalizado">&nbsp;&nbsp;No Personalizado&nbsp;
-				    <input type="checkbox"  id="personalizado">&nbsp;&nbsp;Personalizado
-				    <input type="hidden" name="resultado_personalizado" id="resultado_personalizado" value="0">
-				  </label>
-				</div>
+                  <label>
+                    <input type="checkbox"  id="no_personalizado">&nbsp;&nbsp;No Personalizado&nbsp;
+                    <input type="checkbox"  id="personalizado">&nbsp;&nbsp;Personalizado
+                    <input type="hidden" name="resultado_personalizado" id="resultado_personalizado" value="0">
+                  </label>
+                </div>
 
-                <dir class="col-md-12 hidden" id="info">
+                <div class="col-md-12 hidden" id="info">
 
-                	<span>Para añadir el nombre dentro del SMS Personalizado por favor copiar de la siguiente forma en cualquier parte del texto del mensaje</span></br>    
-                	<label>[nombre]</label>     </br>
-                	<span>Ejemplo:</span>    </br>   	
-                	<span>Hola [nombre], como estas?</span>
-                </dir>
+                  <span>Para añadir el nombre dentro del SMS Personalizado por favor copiar de la siguiente forma en cualquier parte del texto del mensaje</span></br>    
+                  <label>[nombre]</label>     </br>
+                  <span>Ejemplo:</span>    </br>    
+                  <span>Hola [nombre], como estas?</span>
+                </div>
 
                 <div class="form-group col-md-12">
                   <label>Mensaje de texto</label>
                   <textarea class="form-control" rows="3" id="mensaje" name="mensaje" placeholder="Escribe..." maxlength="160"></textarea>
                   <ul>
-                  	<li>
-                  		<label>Limite de mensaje de texto 160 caracteres.</label>
-                  	</li>
-                  	<li>
-                  		<label>No es permitido el uso de tiles, Ñ, ñ ó caracteres especiales.</label>
-                  	</li>
+                    <li>
+                      <label>Limite de mensaje de texto 160 caracteres.</label>
+                    </li>
+                    <li>
+                      <label>No es permitido el uso de tiles, Ñ, ñ ó caracteres especiales.</label>
+                    </li>
                   </ul>
                 </div>
 
@@ -105,45 +97,45 @@ CAMPAÑAS
 
 <script type="text/javascript">
 
-	$(function () {
-	  $('#personalizado').iCheck({
-	    checkboxClass: 'icheckbox_flat-blue',
-	    radioClass: 'iradio_square-blue',
-	    increaseArea: '20%' // optional
-	  });
+  $(function () {
+    $('#personalizado').iCheck({
+      checkboxClass: 'icheckbox_flat-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
 
-	  $('#no_personalizado').iCheck({
-	    checkboxClass: 'icheckbox_flat-blue',
-	    radioClass: 'iradio_square-blue',
-	    increaseArea: '20%' // optional
-	  });
-	 	
-	  $("#no_personalizado").iCheck('check');//inica checked
-	});
+    $('#no_personalizado').iCheck({
+      checkboxClass: 'icheckbox_flat-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
+    
+    $("#no_personalizado").iCheck('check');//inica checked
+  });
 
-	$('#no_personalizado').on('ifChecked', function(event){// para cuando checked
-		$("#info").addClass("hidden");
-	  	$("#resultado_personalizado").val('0');
-	  	$("#personalizado").iCheck('uncheck');//inica checked
+  $('#no_personalizado').on('ifChecked', function(event){// para cuando checked
+    $("#info").addClass("hidden");
+      $("#resultado_personalizado").val('0');
+      $("#personalizado").iCheck('uncheck');//inica checked
 
-	});
+  });
 
-	$('#no_personalizado').on('ifUnchecked', function(event){//si quitan el checked
-		$("#resultado_personalizado").val('1');
-		$("#personalizado").iCheck('check');//inica checked		  
-	});
+  $('#no_personalizado').on('ifUnchecked', function(event){//si quitan el checked
+    $("#resultado_personalizado").val('1');
+    $("#personalizado").iCheck('check');//inica checked     
+  });
 
-	$('#personalizado').on('ifChecked', function(event){// para cuando checked
-		$("#info").removeClass("hidden");
-	  	$("#resultado_personalizado").val('1');
-	  	$("#no_personalizado").iCheck('uncheck');//inica checked		  
+  $('#personalizado').on('ifChecked', function(event){// para cuando checked
+    $("#info").removeClass("hidden");
+      $("#resultado_personalizado").val('1');
+      $("#no_personalizado").iCheck('uncheck');//inica checked      
 
-	});
-	
-	$('#personalizado').on('ifUnchecked', function(event){//si quitan el checked
-		$("#resultado_personalizado").val('0');
-		$("#no_personalizado").iCheck('check');//inica checked
-	});
+  });
+  
+  $('#personalizado').on('ifUnchecked', function(event){//si quitan el checked
+    $("#resultado_personalizado").val('0');
+    $("#no_personalizado").iCheck('check');//inica checked
+  });
 
 
 </script>
