@@ -97,8 +97,9 @@ class TabCampanaController extends Controller
             $id = $request->id;
 
             $infoCampana = TabCampana::where('id',$id)->first();
+            $catCampana  = CatCategoriaCampana::all();  
 
-            return view('campanas.edit',compact('infoCampana'));            
+            return view('campanas.edit',compact('infoCampana','catCampana'));            
         }
 
 
@@ -118,7 +119,7 @@ class TabCampanaController extends Controller
         //Ordering
         $iSortCol_0 = $request->iSortCol_0;
         $iSortingCols = $request->iSortingCols;
-        $aColumns = array("id","nombre","asunto","email_emisor","email_respuesta","mensaje_sms","cat_categoria_campana_id","tab_empresa_id");
+        $aColumns = array("id","nombre","asunto","email_emisor","email_respuesta","mensaje_sms","cat_categoria_campana_id","tab_empresa_id","status");
         
         $sWhere = '';
         
@@ -159,6 +160,9 @@ class TabCampanaController extends Controller
         }elseif($sByColumn == 7){
 
             $bY="tab_empresa_id";
+        }elseif($sByColumn == 8){
+
+            $bY="status";
         }
 
         $sOrder = "ORDER BY ".$bY." ".$OrderD;
@@ -180,13 +184,15 @@ class TabCampanaController extends Controller
             $sWhere .= ')';
         }
 
-        $inventario = DB::select("SELECT id, nombre, asunto, email_emisor, email_respuesta, mensaje_sms, cat_categoria_campana_id, tab_empresa_id FROM tab_campana 
+        $inventario = DB::select("SELECT id, nombre, asunto, email_emisor, email_respuesta, mensaje_sms, cat_categoria_campana_id, tab_empresa_id, status 
+                                FROM tab_campana 
                                 ". $sWhere . "
                                 ". $sOrder . "
                                 LIMIT ". $iDisplayLength . " OFFSET " . $iDisplayStart . "");
 
 
-        $inventario2 = DB::select("SELECT id, nombre, asunto, email_emisor, email_respuesta, mensaje_sms, cat_categoria_campana_id, tab_empresa_id FROM tab_campana
+        $inventario2 = DB::select("SELECT id, nombre, asunto, email_emisor, email_respuesta, mensaje_sms, cat_categoria_campana_id, tab_empresa_id, status 
+                                FROM tab_campana
                                 ". $sWhere . "
                                 ". $sOrder);
 
@@ -229,6 +235,15 @@ class TabCampanaController extends Controller
             }
 
             $row[] = $inv->tab_empresa_id;
+            
+            if ($inv->status == '0') {
+                $status = '<label class="label label-success"> Sin Ejecutar </label>';
+            }else{
+                $status = '<label class="label label-danger"> Ejecutada </label>';
+            }
+
+            $row[] = $status;
+
             $row[] = $actions;
 
             $output['data'][] = $row;

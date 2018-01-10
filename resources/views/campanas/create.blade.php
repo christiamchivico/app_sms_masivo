@@ -58,13 +58,13 @@ CAMPAÑAS
                   </label>
                 </div>
 
-                <dir class="col-md-12 hidden" id="info">
+                <div class="col-md-12 hidden" id="info">
 
                   <span>Para añadir el nombre dentro del SMS Personalizado por favor copiar de la siguiente forma en cualquier parte del texto del mensaje</span></br>    
                   <label>[nombre]</label>     </br>
                   <span>Ejemplo:</span>    </br>    
                   <span>Hola [nombre], como estas?</span>
-                </dir>
+                </div>
 
                 <div class="form-group col-md-12">
                   <label>Mensaje de texto</label>
