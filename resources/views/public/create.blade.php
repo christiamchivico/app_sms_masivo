@@ -58,7 +58,7 @@
     var property = document.getElementById('archivo').files[0];
 
     var form_data = new FormData();
-        form_data.append("file",property);
+        form_data.append("archivo",property);
         form_data.append("idCampana",$('#idCampana').val());
         form_data.append("nombre",$('#nombre').val());
         form_data.append("segmento",$('#segmento').val());

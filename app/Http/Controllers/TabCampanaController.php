@@ -81,7 +81,7 @@ class TabCampanaController extends Controller
                 'tab_campana_id'        =>  $idCampana->id,
                 ]);*/
 
-        return Redirect::to(route('create_publico',['idCampana'=>$idCampana->id]));
+        return Redirect::to(route('edit_campana',['idCampana'=>$idCampana->id]));
 
     }
 

@@ -45,7 +45,7 @@ class TabPublicoObjetivoController extends Controller
 
     	//Obtengo la empresa del usuario logueado
 
-        var_dump($request->all()); exit();
+        
         
     	$idUser 	= Auth::user()->id;
     	$idEmpresa 	= DB::table('users')
