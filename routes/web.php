@@ -16,15 +16,15 @@ Route::get('/', function () {
 });
 
 // Logueo Usuario
-Route::get('/login', ['as'=>'login', 'uses'=>'Auth\LoginController@showLoginForm']);
-Route::post('/login', ['as'=>'Ingreso', 'uses'=>'Auth\LoginController@login']);
+Route::get('/login', ['as'=>'login', 'uses'=>'SistemaController@showLoginForm']);
+Route::post('/login', ['as'=>'Ingreso', 'uses'=>'SistemaController@login']);
 
 //Deslogueo
-Route::get('/logout', ['as'=>'Logout', 'uses'=>'Auth\LoginController@logout']);
+Route::get('/logout', ['as'=>'Logout', 'uses'=>'SistemaController@logout']);
 
 //Registro Nuevo Usuario
-Route::get('/register', ['as'=>'register', 'uses'=>'Auth\RegisterController@showRegistrationForm']);
-Route::post('/register', ['as'=>'Registrar', 'uses'=>'Auth\RegisterController@register']);
+Route::get('/register', ['as'=>'register', 'uses'=>'SistemaController@showRegistrationForm']);
+Route::post('/register', ['as'=>'Registrar', 'uses'=>'SistemaController@register']);
 
 //Pagina Principal
 Route::get('/home', ['as'=>'Home', 'uses'=>'HomeController@index']);
@@ -46,46 +46,4 @@ Route::get('/edit_campana/{id}', ['as'=>'edit_campana', 'uses'=>'TabCampanaContr
 // Modulo Publico
 Route::get('/create_publico/{idCampana}', ['as'=>'create_publico', 'uses'=>'TabPublicoObjetivoController@create']);
 Route::post('/new_publico', ['as'=>'new_publico', 'uses'=>'TabPublicoObjetivoController@new']);
-
-
-/*Route::resource('catCategoriaCampanas', 'CatCategoriaCampanaController');
-
-Route::resource('catSexos', 'CatSexoController');
-
-Route::resource('catTipoCampanas', 'CatTipoCampanaController');
-
-Route::resource('relCampanaPublicos', 'RelCampanaPublicoController');
-
-Route::resource('relUsuarioEmpresas', 'RelUsuarioEmpresaController');
-
-Route::resource('relUsuarioCampanas', 'RelUsuarioCampanaController');
-
-Route::resource('relUsuarioPublicos', 'RelUsuarioPublicoController');
-
-//Route::resource('tabCampanas', 'TabCampanaController');
-
-Route::resource('tabEmpresas', 'TabEmpresaController');
-
-Route::resource('tabFechaEnvios', 'TabFechaEnvioController');
-
-//Route::resource('tabPublicoObjetivos', 'TabPublicoObjetivoController');
-
-Route::resource('tabResultadoMailings', 'TabResultadoMailingController');
-
-Route::resource('tabResultadoSms', 'TabResultadoSmsController');
-
-#Route::get('/getToken', 'UsersController@getTokenPersonal');
-
-Route::resource('tabPublicoInfs', 'TabPublicoInfController');
-
-Route::resource('catSegmentacionPublicos', 'CatSegmentacionPublicoController');
-
-Route::resource('relUsersCampanas', 'RelUsersCampanaController');
-
-Route::resource('relUsersEmpresas', 'RelUsersEmpresaController');
-
-Route::resource('users', 'UsersController');
-
-Route::resource('relTipCampanas', 'RelTipCampanaController');
-
-Route::resource('tabResultadoSmsDets', 'TabResultadoSmsDetController');*/
+Route::get('/list_public_ajax', ['as'=>'list_public_ajax', 'uses'=>'TabPublicoObjetivoController@getPublicoInfoAjax']);

@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+/*
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+*/
+use App\Models\CatSexo;
 
 class RegisterController extends Controller
 {
@@ -36,7 +39,14 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('auth');
+    }
+
+
+    public function form()
+    {
+        $catsexo = CatSexo::all();
+        return view('auth.register',compact('catsexo'));
     }
 
     /**

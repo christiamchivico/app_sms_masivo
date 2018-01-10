@@ -160,6 +160,7 @@ class TabCampanaController extends Controller
         }elseif($sByColumn == 7){
 
             $bY="tab_empresa_id";
+            
         }elseif($sByColumn == 8){
 
             $bY="status";

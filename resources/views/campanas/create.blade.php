@@ -3,11 +3,12 @@
 @section('migas')
 <h1>
 CAMPAÑAS
-<small>Campañas Creadas</small>
+<small>Nueva Campaña</small>
 </h1>
 <ol class="breadcrumb">
-<li><a href="#"><i class="fa fa-dashboard"></i> Campaña</a></li>
-<li class="active">Publico</li>
+<li><a href="{{ route('Home')}}"><i class="fa fa-dashboard"></i> Home</a></li>
+<li class=""><a href="{{ route('list_campanas')}}">Campañas</a></li>
+<li class="active">Crear Campaña</li>
 </ol>
 @endsection
 
