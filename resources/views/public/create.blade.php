@@ -1,5 +1,24 @@
+@extends('base.app')
+
+@section('migas')
+<h1>
+CAMPAÑAS
+<small>Gestion Publico</small>
+</h1>
+<ol class="breadcrumb">
+<li><a href="#"><i class="fa fa-dashboard"></i> Campañas</a></li>
+<li class="active">Publico</li>
+</ol>
+@endsection
+
+@section('contenido')
+
+
 <div class="col-md-12">
-           
+<div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Añadir Publico</h3>
+            </div>
             <!-- /.box-header -->
             @if ($errors->any())     
             <div class="alert alert-danger">         
@@ -11,11 +30,7 @@
             </div> 
             @endif
             <!-- form start -->
-            <form role="form" id="cargue" enctype="multipart/form-data">
-              <input type="hidden" name="idCampana" value="{{ $idCampana }}">
-              <!--input type="hidden" name="_token" value="{{ csrf_token() }}"-->
-              <meta name="csrf-token" content="{{ csrf_token() }}">
-              
+            <form role="form" id="" action="{{ route('new_publico') }}" method="POST" enctype="multipart/form-data">
               <div class="box-body">
                 <div class="form-group col-md-6">
                   <label for="nombre">Nombre del Publico</label>
@@ -41,19 +56,24 @@
               </div>
               <!-- /.box-body -->
 
-              
+              <input type="hidden" name="idCampana" value="{{ $idCampana }}">
+              <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-              <div class="modal-footer">
-                <a href="javascript:;" onclick="carga_publico()" class="btn btn-primary"><i class="fa fa-upload"></i>  Cargar</a>
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Cerrar</button>
-
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>  Enviar</button>
               </div>
             </form>
+          </div>
 </div>
+
+@endsection
+
+@section('js')
+
 
 <script type="text/javascript">
   
-  function carga_publico(){
+  /*function carga_publico(){
 
     var property = document.getElementById('archivo').files[0];
 
@@ -79,9 +99,42 @@
           success:function(data){
             console.log(data);
             $('#msg').html(data);
+            //$('#modal-default').modal('hide')
           }
         });
 
   }
+  $("#cargue").validate({
+    rules: {
+      nombre: {
+        required: true,
+        minlength: 4
+      },
+      segmento: {
+        required: true,
+      },
+      archivo: {
+        required: true,
+        minlength: 6
+      }
+    },
+    messages: {
+      nombre: {
+        required: "Por favor ingresa tu nombre",
+        minlength: jQuery.validator.format("Al menos {0} Caracteres requeridos!")
+      },
+      segmento: {
+        required: "Por favor ingresa el asunto",
+      },
+      archivo: {
+        required: "Por favor cargue un archivo",
+      },
+      
+    }
+  });*/
 
 </script>
+
+@endsection
+
+

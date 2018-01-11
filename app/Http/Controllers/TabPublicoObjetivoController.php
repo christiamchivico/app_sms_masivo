@@ -44,9 +44,6 @@ class TabPublicoObjetivoController extends Controller
     public function new(Request $request){
 
     	//Obtengo la empresa del usuario logueado
-
-        
-        
     	$idUser 	= Auth::user()->id;
     	$idEmpresa 	= DB::table('users')
 	    				->select('rel_users_empresa.tab_empresa_id')

@@ -9,6 +9,7 @@ use Redirect;
 
 use App\Models\TabCampana;
 use App\Models\CatCategoriaCampana;
+use App\Models\CatSegmentacionPublico;
 //use App\Models\CatTipoCampana;
 //use App\Models\RelCampanaTipoCampana;
 use App\Models\RelUsersCampana;
@@ -98,8 +99,9 @@ class TabCampanaController extends Controller
 
             $infoCampana = TabCampana::where('id',$id)->first();
             $catCampana  = CatCategoriaCampana::all();  
+            $segmento   = CatSegmentacionPublico::all();
 
-            return view('campanas.edit',compact('infoCampana','catCampana'));            
+            return view('campanas.edit',compact('infoCampana','catCampana','segmento'));            
         }
 
 
