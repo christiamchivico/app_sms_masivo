@@ -10,5 +10,12 @@ class TabEmpresa extends Model
     use SoftDeletes;
     protected $table = 'tab_empresa';
 
-    
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'nombre', 'nit', 'razon_social'
+    ];
 }

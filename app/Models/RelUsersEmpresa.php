@@ -9,4 +9,6 @@ class RelUsersEmpresa extends Model
 {
     use SoftDeletes;
     protected $table = 'rel_users_empresa';
+
+    protected $fillable = ['users_id', 'tab_empresa_id'];
 }

@@ -58,7 +58,7 @@
                 @endif
             </div>
 
-            <div class="form-group has-feedback{{ $errors->has('sexo') ? ' has-error' : '' }}">
+            <!--div class="form-group has-feedback{{ $errors->has('sexo') ? ' has-error' : '' }}">
                 <select class="form-control" id="sexo" name="sexo">
                     <option value="0"> Seleccione su Sexo</option>
                     @foreach($catsexo as $key)
@@ -70,8 +70,41 @@
                         <strong>{{ $errors->first('email') }}</strong>
                     </span>
                 @endif
+            </div-->
+
+            
+            <div class="form-group has-feedback{{ $errors->has('name_company') ? ' has-error' : '' }}">
+                <input type="text" class="form-control" name="name_company" value="{{ old('name_company') }}" placeholder="Nombre Empresa">
+                <span class="glyphicon glyphicon-briefcase form-control-feedback"></span>
+
+                @if ($errors->has('name_company'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('name_company') }}</strong>
+                    </span>
+                @endif
             </div>
 
+            <div class="form-group has-feedback{{ $errors->has('nit') ? ' has-error' : '' }}">
+                <input type="nit" class="form-control" name="nit" value="{{ old('nit') }}" placeholder="Nit">
+                <span class="glyphicon glyphicon-ok-circle form-control-feedback"></span>
+
+                @if ($errors->has('nit'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('nit') }}</strong>
+                    </span>
+                @endif
+            </div>
+
+            <div class="form-group has-feedback{{ $errors->has('business_name') ? ' has-error' : '' }}">
+                <input type="business_name" class="form-control" name="business_name" placeholder="Razon Social">
+                <span class="glyphicon glyphicon-bookmark form-control-feedback"></span>
+
+                @if ($errors->has('business_name'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('business_name') }}</strong>
+                    </span>
+                @endif
+            </div>
             <div class="form-group has-feedback{{ $errors->has('password') ? ' has-error' : '' }}">
                 <input type="password" class="form-control" name="password" placeholder="Contraseña">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>

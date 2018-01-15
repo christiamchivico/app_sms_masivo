@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->integer('cat_sexo_id')->unsigned()->nullable();//no todos pueden definir el genero
             $table->foreign('cat_sexo_id')->references('id')->on('cat_sexo');
+            $table->string('status')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
